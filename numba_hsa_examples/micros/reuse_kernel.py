@@ -38,7 +38,7 @@ bmlist = [Benchmark(name='reuse{0}'.format(x),
                     launcher=partial(launcher, num_reuse=x),
                     scaling=work_balanced_scaling,
                     dtypes=[np.float32, np.float64])
-          for x in [2, 4, 8, 16, 32]]
+          for x in [2, 4, 8, 16, 32, 64]]
 
 if __name__ == '__main__':
     for bm in bmlist:

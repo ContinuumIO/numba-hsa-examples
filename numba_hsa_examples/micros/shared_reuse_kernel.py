@@ -8,7 +8,7 @@ from functools import partial
 
 from .utils import Benchmark, work_balanced_scaling
 
-MAX_REUSE = 32
+MAX_REUSE = 64
 BLOCKSIZE = 4 * 64
 CHUNKSIZE = BLOCKSIZE + MAX_REUSE
 
@@ -66,7 +66,7 @@ bmlist = [Benchmark(name='sharedreuse{0}'.format(x),
                     launcher=partial(launcher, num_reuse=x),
                     scaling=partial(work_balanced_scaling, threads=BLOCKSIZE),
                     dtypes=[np.float32, np.float64])
-          for x in [2, 4, 8, 16, 32]]
+          for x in [2, 4, 8, 16, 32, 64]]
 
 if __name__ == '__main__':
     for bm in bmlist:

@@ -36,6 +36,11 @@ bm_mul32 = Benchmark(name='mul32',
                      scaling=work_balanced_scaling,
                      dtypes=[np.float32, np.float64])
 
+bm_mul64 = Benchmark(name='mul64',
+                     launcher=partial(launcher, nop=64),
+                     scaling=work_balanced_scaling,
+                     dtypes=[np.float32, np.float64])
+
 bm_mul128 = Benchmark(name='mul128',
                       launcher=partial(launcher, nop=128),
                       scaling=work_balanced_scaling,
@@ -49,5 +54,6 @@ bm_mul256 = Benchmark(name='mul256',
 if __name__ == '__main__':
     bm_mul1.main()
     bm_mul32.main()
+    bm_mul64.main()
     bm_mul128.main()
     bm_mul256.main()
