@@ -45,11 +45,12 @@ class Benchmark(object):
             pickle.dump(timings, file=fout)
 
 
-def work_balanced_scaling(maxblocks=2**16, threads_factor=8, wavesize=64,
-                          maxsize=2 ** 30):
+def work_balanced_scaling(maxblocks=2**16, threads_factor=4, wavesize=64,
+                          maxsize=2 ** 30, threads=None):
 
     blocks = 1
-    threads = threads_factor * wavesize
+    if threads is None:
+        threads = threads_factor * wavesize
     size = blocks * threads
     while size <= maxsize and blocks <= maxblocks:
         yield threads, blocks, size
