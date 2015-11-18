@@ -13,8 +13,9 @@ import itertools
 from numba_hsa_examples.kde_bokeh import kde
 from numba_hsa_examples.kde_bokeh import dataloader
 from numba_hsa_examples.kde_bokeh import plotting
+from numba_hsa_examples.kde_bokeh import countries
 
-TITLE = "US Lightning Density"
+TITLE = "Lightning Density"
 
 
 def get_us_state_outline():
@@ -30,9 +31,43 @@ def get_us_state_outline():
     return state_xs, state_ys
 
 
+def get_country_outline():
+    ctrydict = countries.groupby_country(countries.load_data())
+    return ctrydict
+
+
 def plot_state_outline(plot, state_xs, state_ys):
     plot.patches(state_xs, state_ys, fill_alpha=0.2, line_color="black",
                  line_width=1)
+
+
+def plot_country_outline(plot):
+    ctrydict = get_country_outline()
+    find_countries = ['Mexico',
+                      'Guatemala',
+                      'Honduras',
+                      'Nicaragua',
+                      'Puerto Rico',
+                      'Cuba',
+                      'Dominican Republic',
+                      'Haiti',
+                      'Puerto Rico',
+                      'Panama',
+                      'Colombia',
+                      'Venezuela',
+                      'Guyana',
+                      'Ecuador',
+                      ]
+    xs = []
+    ys = []
+    print(ctrydict.keys())
+    for name in find_countries:
+        print(name)
+        for i, obj in enumerate(ctrydict[name]):
+            xs.append(obj['xs'])
+            ys.append(obj['ys'])
+
+    plot.patches(xs, ys, fill_alpha=0.2, line_color='black', line_width=1)
 
 
 class ViewListener(object):
@@ -158,8 +193,12 @@ class DensityOverlay(object):
 
 def main():
     state_xs, state_ys = get_us_state_outline()
-    left, right = minmax(state_xs)
-    bottom, top = minmax(state_ys)
+    # left, right = minmax(state_xs)
+    # bottom, top = minmax(state_ys)
+    left = -130
+    right = -60
+    top = 50
+    bottom = 0
     plot = Figure(title=TITLE, plot_width=1000,
                   plot_height=700,
                   tools="pan, wheel_zoom, box_zoom, reset",
@@ -167,6 +206,8 @@ def main():
                   y_range=Range1d(bottom, top))
 
     plot_state_outline(plot, state_xs, state_ys)
+
+    plot_country_outline(plot)
 
     density_overlay = DensityOverlay(plot, left, right, bottom, top)
     density_overlay.draw()
