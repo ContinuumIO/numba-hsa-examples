@@ -261,14 +261,12 @@ class CustomGrouper(BaseGrouper):
                                                         agg_func)
                 fn(result, counts, values, comp_ids)
             except:
-                _logger.exception("HSA cusotm grouper failed with exception")
+                _logger.exception("HSA custom grouper failed with exception")
                 raise
 
         return result
 
-
 SPEED_BARRIER = 10 ** 5 * 5
-
 
 def _hsa_group_agg(cpu_agg, gpu_agg, result, counts, values, comp_ids):
     assert comp_ids.size == values.shape[0]
